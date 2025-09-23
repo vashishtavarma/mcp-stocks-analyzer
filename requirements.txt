@@ -2,3 +2,4 @@ fastmcp
 GoogleNews
 mcp
 requests
+yfinance
