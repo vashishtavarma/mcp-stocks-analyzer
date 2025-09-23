@@ -29,16 +29,30 @@ def get_news_from_google(ticker: str):
     
 
 @mcp.tool()
-def get_domestic_stock_price(symbol: str):
+def get_stock_price(symbol: str):
     """
-    Fetch 7 days stock price data for the given ticker using yfinance.
+    Fetch the last 7 days of stock price data for the given ticker using yfinance.
+
+    Args:
+        symbol (str): Stock ticker symbol.
+            - For Indian stocks: append ".NS" for NSE or ".BO" for BSE. 
+              Example: "RELIANCE.NS", "TCS.BO"
+            - For US stocks: use the ticker as is. 
+              Example: "AAPL", "GOOGL", "MSFT"
+            - For other foreign exchanges: use the appropriate suffix 
+              as per Yahoo Finance conventions. 
+              Example: "7203.T" (Toyota on Tokyo Exchange), "RY.TO" (Royal Bank of Canada on Toronto Exchange)
+
+    Returns:
+        list[dict]: List of stock price records with date and OHLCV data.
     """
     ticker = yf.Ticker(symbol)
-    hist = ticker.history(period="10d", interval="1d")
-    last_7 = hist.tail(7)
-    
-    return last_7
-    
+    hist = ticker.history(period="10d", interval="1d").tail(7)
+    hist = hist.reset_index()
+    records = hist.to_dict(orient="records")
+
+    return records
+
 
 if __name__ == "__main__":
     mcp.run()
