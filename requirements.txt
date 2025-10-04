@@ -1,5 +1,5 @@
 fastmcp
 GoogleNews
-mcp
+mcp[cli]
 requests
 yfinance
