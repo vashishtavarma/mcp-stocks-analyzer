@@ -2,7 +2,7 @@ from mcp.server.fastmcp import FastMCP
 from GoogleNews import GoogleNews
 import yfinance as yf
 
-mcp = FastMCP("NewsFetcher")
+mcp = FastMCP("newsfetcher")
 
 @mcp.tool()
 def get_news_from_google(ticker: str):
@@ -52,6 +52,35 @@ def get_stock_price(symbol: str):
     records = hist.to_dict(orient="records")
 
     return records
+
+
+@mcp.resource("welcome://")
+def get_welcome() -> str:
+    """Get a general welcome message for the MCP Stocks Analyzer"""
+    
+    welcome_msg = """
+        🎉 Welcome to MCP Stocks Analyzer! 🎉
+
+        Your comprehensive financial analysis companion powered by:
+        • 📰 Real-time news from Google News
+        • 📈 Stock data from Yahoo Finance
+        • 🔍 Advanced market analysis tools
+
+        Available Tools:
+        🔸 get_news_from_google(ticker) - Get latest news for any stock
+        🔸 get_stock_price(symbol) - Fetch 7-day price history
+        🔸 get_greeting(name) - Personalized welcome message
+
+        Stock Symbol Examples:
+        🇺🇸 US Stocks: AAPL, GOOGL, MSFT, TSLA
+        🇮🇳 Indian Stocks: RELIANCE.NS, TCS.BO, INFY.NS
+        🌍 International: 7203.T (Toyota), RY.TO (Royal Bank)
+
+        Ready to start your financial analysis journey? 🚀
+    """
+    
+    return welcome_msg.strip()
+
 
 
 if __name__ == "__main__":
