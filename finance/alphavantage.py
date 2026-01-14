@@ -1,3 +1,8 @@
+"""
+This is an example script for testing the Alpha Vantage API.
+It is not part of the main MCP Stocks Analyzer application logic.
+"""
+
 from dotenv import load_dotenv
 import requests
 import os

@@ -43,19 +43,17 @@ A simple and efficient Model Context Protocol (MCP) server for financial analysi
    python main.py
    ```
 
-2. Use the following tools:
-   - `get_news_from_google(ticker, region, period)`
-   - `get_stock_price(symbol, period, interval)`
+2. Use the available tools. See [API Documentation](docs/API.md) for full details.
+   - `get_news_from_google(ticker, region='IN', period='7d')`
+   - `get_stock_price(symbol, period='7d', interval='1d')`
 
 ---
 
-## Configuration
+## Project Structure
 
-- **Language**: Default is English (`en`).
-- **Region**: Default is India (`IN`).
-- **Period**: Default is 7 days (`7d`).
-
-To customize, modify `main.py` or pass parameters directly to the tools.
+- `main.py`: The entry point for the MCP server.
+- `finance/`: Contains example scripts for testing individual libraries (`alphavantage.py`, `googlenews.py`, `yahoofinance.py`). These are not used by the main application.
+- `docs/`: Documentation files.
 
 ---
 
@@ -75,16 +73,18 @@ To integrate MCP Stocks Analyzer with Claude Desktop, follow these steps:
    {
      "mcpServers": {
        "stock-analyzer": {
-         "command": "<path>\\mcp-stocks-analyzer\\venv\\Scripts\\python.exe",
+         "command": "<path>/mcp-stocks-analyzer/venv/bin/python",
          "args": [
-           "<path>\\mcp-stocks-analyzer\\main.py"
+           "<path>/mcp-stocks-analyzer/main.py"
          ]
        }
      }
    }
    ```
 
-   > **Note**: Replace the paths with the absolute paths to your Python executable (inside the virtual environment) and the `main.py` file.
+   *Note for Windows users: Adjust the python path to `...\\venv\\Scripts\\python.exe` and use backslashes.*
+
+   > **Important**: Replace `<path>` with the absolute path to your project directory.
 
 3. **Restart Claude Desktop**:
    Restart the application to apply the changes. The MCP Stocks Analyzer tools will now be available in Claude Desktop.
