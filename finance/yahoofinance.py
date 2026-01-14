@@ -1,3 +1,8 @@
+"""
+This is an example script for testing the yfinance library.
+It is not part of the main MCP Stocks Analyzer application logic.
+"""
+
 import yfinance as yf
 
 def get_last_7_days(symbol):
