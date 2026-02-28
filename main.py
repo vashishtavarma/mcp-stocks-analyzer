@@ -74,34 +74,5 @@ def get_stock_price(symbol: str, period: str = '7d', interval: str = '1d'):
 
     return records
 
-
-@mcp.resource("welcome://")
-def get_welcome() -> str:
-    """Get a general welcome message for the MCP Stocks Analyzer"""
-    
-    welcome_msg = """
-        Welcome to MCP Stocks Analyzer
-
-        A professional financial analysis tool providing:
-        • Real-time news from Google News
-        • Stock data from Yahoo Finance
-        • Market analysis capabilities
-
-        Available Tools:
-        • get_news_from_google(ticker, region='IN', period='7d') - Retrieve latest news for any stock
-        • get_stock_price(symbol, period='7d', interval='1d') - Fetch price history (returns last 7 records)
-
-        Stock Symbol Examples:
-        • US Stocks: AAPL, GOOGL, MSFT, TSLA
-        • Indian Stocks: RELIANCE.NS, TCS.BO, INFY.NS
-        • International: 7203.T (Toyota), RY.TO (Royal Bank)
-
-        Ready to begin your financial analysis.
-    """
-    
-    return welcome_msg.strip()
-
-
-
 if __name__ == "__main__":
     mcp.run()
