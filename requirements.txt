@@ -1,5 +1,5 @@
 fastmcp
-GoogleNews
+gnews
 mcp[cli]
 python-dotenv
 requests

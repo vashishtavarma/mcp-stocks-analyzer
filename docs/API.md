@@ -28,9 +28,10 @@ A list of dictionaries, where each dictionary represents a news article with the
 
 *   `title` (str): The title of the article.
 *   `date` (str): The publication date string.
-*   `datetime` (datetime, optional): The publication datetime object (if available).
+*   `datetime` (None): Reserved for parsed datetime.
 *   `description` (str): A short description or snippet of the article.
 *   `link` (str): The URL to the full article.
+*   `publisher` (str): The source/publisher name.
 
 **Example Usage:**
 
@@ -65,7 +66,7 @@ get_stock_price(symbol: str, period: str, interval: str) -> list[dict]
 
 **Returns:**
 
-A list of dictionaries, where each dictionary represents a historical price record. The keys typically include:
+A list of dictionaries representing all historical price records in the requested period. The keys typically include:
 
 *   `Date` (datetime): The date of the record.
 *   `Open` (float): Opening price.

@@ -1,5 +1,5 @@
 from mcp.server.fastmcp import FastMCP
-from GoogleNews import GoogleNews
+from gnews import GNews
 import yfinance as yf
 from toon import encode
 
@@ -29,26 +29,25 @@ def get_news_from_google(ticker: str, region: str = 'IN', period: str = '7d'):
         list[dict]: News articles, each containing:
             - title (str): Headline of the article.
             - date (str): Human-readable publication date.
-            - datetime (datetime | None): Parsed publication datetime, if available.
+            - datetime (None): Reserved for parsed datetime.
             - description (str): Short snippet or summary.
             - link (str): URL to the full article.
+            - publisher (str): Source/publisher name.
     """
-    googlenews = GoogleNews(lang='en', region=region, period=period, encode='utf-8')
-    googlenews.get_news(ticker)
-    results = googlenews.results()
+    google_news = GNews(language="en", country=region, period=period)
+    results = google_news.get_news(ticker) or []
     articles = []
     for result in results:
         article = {
             "title": result.get("title"),
-            "date": result.get("date"),
-            "datetime": result.get("datetime"),
-            "description": result.get("desc"),
-            "link": result.get("link")
+            "date": result.get("published date"),
+            "datetime": None,
+            "description": result.get("description"),
+            "link": result.get("url"),
+            "publisher": result.get("publisher"),
         }
         articles.append(article)
-        
-    googlenews.clear()
-    
+
     return encode(articles)
     
 

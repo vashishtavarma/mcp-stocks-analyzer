@@ -27,8 +27,9 @@ All server logic lives in a single file: **`main.py`**. It uses the `FastMCP` fr
 
 ### Exposed MCP Tools
 
-- **`get_news_from_google(ticker, region='IN', period='7d')`** — Fetches news via `GoogleNews`. Returns a list of article dicts (`title`, `date`, `datetime`, `description`, `link`). Always calls `googlenews.clear()` after fetching.
-- **`get_stock_price(symbol, period='7d', interval='1d')`** — Fetches OHLCV data via `yfinance`. Always returns the **last 7 records** (`.tail(7)`), regardless of period.
+- **`get_news_from_google(ticker, region='IN', period='7d')`** — Fetches news via `GNews` (from the `gnews` package). Returns a list of article dicts (`title`, `date`, `datetime`, `description`, `link`, `publisher`). Output is encoded via `toon.encode`.
+- **`get_stock_price(symbol, period, interval)`** — Fetches OHLCV data via `yfinance`. Returns all records for the requested period as a list of dicts. Output is encoded via `toon.encode`.
+- **`get_company_info(symbol)`** — Fetches company profile and financial fundamentals via `yfinance`. Returns a dict of key fields (e.g. `shortName`, `sector`, `marketCap`, `trailingPE`). Returns `{"error": ..., "symbol": ...}` on failure instead of raising.
 
 ### `finance/` directory
 
