@@ -116,5 +116,5 @@ def get_company_info(symbol: str) -> dict:
 
 
 if __name__ == "__main__":
-    print(get_stock_price("SWIGGY.NS", "7d", "1d"))
+    mcp.run()
     
