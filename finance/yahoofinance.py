@@ -4,13 +4,18 @@ It is not part of the main MCP Stocks Analyzer application logic.
 """
 
 import yfinance as yf
+from toon import encode
 
 def get_last_7_days(symbol):
     ticker = yf.Ticker(symbol)
     print(ticker)
-    hist = ticker.history(period="10d", interval="1d")
-    last_7 = hist.tail(7)
-    return last_7
+    hist = ticker.history(period="7d", interval="1h")
+    return hist
 
-data = get_last_7_days("SWIGGY.NS")
-print(data)
+def check(symbol):
+    ticker = yf.Ticker(symbol)
+    return encode(ticker.info)
+
+print(check("SWIGGY.NS"))
+# data = get_last_7_days("SWIGGY.NS")
+# print(data)

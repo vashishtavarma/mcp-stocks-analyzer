@@ -4,3 +4,4 @@ mcp[cli]
 python-dotenv
 requests
 yfinance
+python-toon

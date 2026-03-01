@@ -7,7 +7,8 @@ A simple and efficient Model Context Protocol (MCP) server for financial analysi
 ## Features
 
 - **Real-time News**: Fetch news articles for stock tickers from Google News.
-- **Stock Data**: Retrieve historical stock prices using Yahoo Finance.
+- **Stock Data**: Retrieve historical OHLCV prices using Yahoo Finance.
+- **Company Info**: Fetch fundamentals, ratios, and company profile via Yahoo Finance.
 - **MCP Integration**: Seamless compatibility with AI assistants.
 
 ---
@@ -45,7 +46,8 @@ A simple and efficient Model Context Protocol (MCP) server for financial analysi
 
 2. Use the available tools. See [API Documentation](docs/API.md) for full details.
    - `get_news_from_google(ticker, region='IN', period='7d')`
-   - `get_stock_price(symbol, period='7d', interval='1d')`
+   - `get_stock_price(symbol, period, interval)`
+   - `get_company_info(symbol)`
 
 ---
 
