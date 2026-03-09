@@ -217,6 +217,3 @@ def get_technical_indicators(symbol: str, period: str = "6mo", interval: str = "
 
         "signals": signals,
     }
-
-if __name__ == "__main__":
-    print(get_technical_indicators("RELIANCE.NS", "6mo", "1d"))
