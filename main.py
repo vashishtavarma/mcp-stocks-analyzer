@@ -2,6 +2,7 @@ from mcp.server.fastmcp import FastMCP
 from gnews import GNews
 import yfinance as yf
 from toon import encode
+from indicators import get_technical_indicators as compute_indicators
 
 DISCLAIMER = """
             DISCLAIMER:
@@ -112,6 +113,33 @@ def get_company_info(symbol: str) -> dict:
         return encode(ticker.info)
     except Exception as e:
         return {"error": str(e), "symbol": symbol}
+
+
+@mcp.tool()
+def get_technical_indicators(symbol: str, period: str = "6mo", interval: str = "1d") -> dict:
+    """
+    Compute technical indicators for a stock.
+
+    Args:
+        symbol: Yahoo Finance ticker symbol.
+            - US stocks: plain ticker, e.g. 'AAPL', 'MSFT'.
+            - Indian stocks: append '.NS' (NSE) or '.BO' (BSE), e.g. 'RELIANCE.NS'.
+        period: Data lookback period.
+            - Valid values: '3mo', '6mo', '1y', '2y'.
+            - Default: '6mo' (recommended for reliable 200 DMA).
+        interval: Candle granularity.
+            - Valid values: '1d', '1wk'.
+            - Default: '1d'.
+
+    Returns:
+        dict: Technical analysis with sections:
+            - trend: direction, strength (ADX), SMAs, EMAs, MACD
+            - momentum: RSI, Stochastic, Williams %R, CCI
+            - volatility: ATR, Bollinger Bands (width, squeeze)
+            - volume: current vs 20-day avg, relative volume, OBV, VWAP
+            - signals: auto-detected events (crossovers, overbought/oversold, breakouts)
+    """
+    return compute_indicators(symbol, period, interval)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 fastmcp
 gnews
 mcp[cli]
+ta
 python-dotenv
 requests
 yfinance
