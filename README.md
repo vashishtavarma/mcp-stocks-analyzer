@@ -6,10 +6,11 @@ A simple and efficient Model Context Protocol (MCP) server for financial analysi
 
 ## Features
 
-- **Real-time News**: Fetch news articles for stock tickers from Google News.
-- **Stock Data**: Retrieve historical OHLCV prices using Yahoo Finance.
-- **Company Info**: Fetch fundamentals, ratios, and company profile via Yahoo Finance.
-- **MCP Integration**: Seamless compatibility with AI assistants.
+- **News**: Fetch stock news from Google News.
+- **Prices**: Get historical OHLCV data from Yahoo Finance.
+- **Company info**: Read fundamentals and profile data.
+- **Technical indicators**: Compute trend, momentum, volatility, and volume signals.
+- **MCP-ready**: Designed to plug into AI assistants.
 
 ---
 
@@ -44,18 +45,21 @@ A simple and efficient Model Context Protocol (MCP) server for financial analysi
    python main.py
    ```
 
-2. Use the available tools. See [API Documentation](docs/API.md) for full details.
+2. Use the available tools from your MCP client:
    - `get_news_from_google(ticker, region='IN', period='7d')`
    - `get_stock_price(symbol, period, interval)`
    - `get_company_info(symbol)`
+   - `get_technical_indicators(symbol, period='6mo', interval='1d')`
 
 ---
 
 ## Project Structure
 
-- `main.py`: The entry point for the MCP server.
-- `finance/`: Contains example scripts for testing individual libraries (`alphavantage.py`, `googlenews.py`, `yahoofinance.py`). These are not used by the main application.
-- `docs/`: Documentation files.
+- `main.py`: MCP server entry point that registers tools.
+- `src/news.py`: News fetching tool.
+- `src/price.py`: Price history tool.
+- `src/company.py`: Company info tool.
+- `src/indicators.py`: Technical indicators tool.
 
 ---
 
