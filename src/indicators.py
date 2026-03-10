@@ -1,10 +1,11 @@
 import yfinance as yf
 import pandas as pd
 from toon import encode
+from src.errors import not_found, fetch_failed
 import ta
 
 
-def get_technical_indicators(symbol: str, period: str , interval: str) -> dict:
+def get_technical_indicators(symbol: str, period: str, interval: str) -> dict:
     """
     Compute technical indicators for a stock.
 
@@ -18,11 +19,14 @@ def get_technical_indicators(symbol: str, period: str , interval: str) -> dict:
     """
 
     # --- 1. Fetch Data ---
-    ticker = yf.Ticker(symbol)
-    df = ticker.history(period=period, interval=interval)
+    try:
+        ticker = yf.Ticker(symbol)
+        df = ticker.history(period=period, interval=interval)
+    except Exception as e:
+        return fetch_failed(symbol, e)
 
     if df.empty:
-        return {"error": f"No data found for {symbol}"}
+        return not_found(symbol, f"No price history for period='{period}', interval='{interval}'.")
 
     # Clean column names (yfinance sometimes returns multi-index)
     df.columns = [col if isinstance(col, str) else col[0] for col in df.columns]

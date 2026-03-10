@@ -1,5 +1,6 @@
 import yfinance as yf
 from toon import encode
+from src.errors import not_found, fetch_failed
 
 
 def get_stock_price(symbol: str, period: str, interval: str):
@@ -28,8 +29,13 @@ def get_stock_price(symbol: str, period: str, interval: str):
             - Dividends (float): Dividends paid.
             - Stock Splits (float): Stock splits occurred.
     """
-    ticker = yf.Ticker(symbol)
-    hist = ticker.history(period=period, interval=interval)
-    hist = hist.reset_index()
-    records = hist.to_dict(orient="records")
-    return encode(records)
+    try:
+        ticker = yf.Ticker(symbol)
+        hist = ticker.history(period=period, interval=interval)
+        if hist.empty:
+            return not_found(symbol, f"No price data for period='{period}', interval='{interval}'.")
+        hist = hist.reset_index()
+        records = hist.to_dict(orient="records")
+        return encode(records)
+    except Exception as e:
+        return fetch_failed(symbol, e)

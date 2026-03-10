@@ -1,5 +1,6 @@
 import yfinance as yf
 from toon import encode
+from src.errors import not_found, fetch_failed
 
 
 def get_company_info(symbol: str) -> dict:
@@ -27,6 +28,9 @@ def get_company_info(symbol: str) -> dict:
     """
     try:
         ticker = yf.Ticker(symbol)
-        return encode(ticker.info)
+        info = ticker.info
+        if not info or info.get("quoteType") == "NONE" or "shortName" not in info:
+            return not_found(symbol, "Yahoo Finance returned no company profile.")
+        return encode(info)
     except Exception as e:
-        return {"error": str(e), "symbol": symbol}
+        return fetch_failed(symbol, e)
