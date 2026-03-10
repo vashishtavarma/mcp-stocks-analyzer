@@ -1,6 +1,6 @@
 from gnews import GNews
 from toon import encode
-from src.errors import not_found, fetch_failed
+from ..resources.errors import not_found, fetch_failed
 
 
 def get_news_from_google(ticker: str, region: str = 'IN', period: str = '7d'):

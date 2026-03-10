@@ -1,7 +1,7 @@
 import yfinance as yf
 import pandas as pd
 from toon import encode
-from src.errors import not_found, fetch_failed
+from ..resources.errors import not_found, fetch_failed
 import ta
 
 
@@ -224,6 +224,7 @@ def get_technical_indicators(symbol: str, period: str, interval: str) -> dict:
     }
 
     return encode(res)
+
 
 if __name__ == "__main__":
     print(get_technical_indicators("RELIANCE.NS", period="6mo", interval="1d"))

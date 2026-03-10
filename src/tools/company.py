@@ -1,6 +1,6 @@
 import yfinance as yf
 from toon import encode
-from src.errors import not_found, fetch_failed
+from ..resources.errors import not_found, fetch_failed
 
 
 def get_company_info(symbol: str) -> dict:
