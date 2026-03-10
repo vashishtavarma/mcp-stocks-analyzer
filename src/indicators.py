@@ -1,9 +1,10 @@
 import yfinance as yf
 import pandas as pd
+from toon import encode
 import ta
 
 
-def get_technical_indicators(symbol: str, period: str = "6mo", interval: str = "1d") -> dict:
+def get_technical_indicators(symbol: str, period: str , interval: str) -> dict:
     """
     Compute technical indicators for a stock.
 
@@ -166,7 +167,7 @@ def get_technical_indicators(symbol: str, period: str = "6mo", interval: str = "
         elif sma50 < sma200 and latest < sma50:
             trend_direction = "BEARISH"
 
-    return {
+    res = {
         "symbol": symbol,
         "last_price": safe(latest),
         "date": str(df.index[-1].date()) if hasattr(df.index[-1], "date") else str(df.index[-1]),
@@ -217,3 +218,8 @@ def get_technical_indicators(symbol: str, period: str = "6mo", interval: str = "
 
         "signals": signals,
     }
+
+    return encode(res)
+
+if __name__ == "__main__":
+    print(get_technical_indicators("RELIANCE.NS", period="6mo", interval="1d"))
