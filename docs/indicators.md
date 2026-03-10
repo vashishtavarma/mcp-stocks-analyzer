@@ -1,23 +1,25 @@
 ## `src/indicators.py`
 
 ### 1. Context & Overview
-`indicators.py` computes higher-level technical analysis indicators and summary signals for a given stock using historical price data from Yahoo Finance and the `ta` library. It distills raw OHLCV data into trend, momentum, volatility, volume metrics, and interpreted trading signals.
+`indicators.py` computes higher-level technical analysis indicators and summary signals for a given stock using historical price data from Yahoo Finance and the `ta` library. It distills raw OHLCV data into trend, momentum, volatility, volume metrics, and interpreted trading signals, and returns structured error responses when a symbol is invalid or the fetch fails.
 
 ### 2. Structure Analysis
 - **Imports**
   - `yfinance as yf` – to fetch historical price data.
   - `pandas as pd` – for NaN handling and DataFrame operations.
   - `ta` – technical analysis indicators library.
+  - `not_found`, `fetch_failed` from `src.errors` – shared structured error builders.
 - **Functions**
-  - `get_technical_indicators(symbol: str, period: str = "6mo", interval: str = "1d") -> dict`
+  - `get_technical_indicators(symbol: str, period: str, interval: str) -> dict`
     - Single exported function; orchestrates data retrieval, feature computation, and summary generation.
   - Inner helper:
     - `safe(val)` – nested helper to convert values to rounded floats or `None`.
 
 ### 3. Key Logic & Responsibilities
 - **Data retrieval & preparation**
-  - Fetches history via `yf.Ticker(symbol).history(period=period, interval=interval)`.
-  - Returns `{"error": f"No data found for {symbol}"}` if no data is found.
+  - Wraps `yf.Ticker(symbol).history(...)` in a `try/except` block:
+    - On exception: returns `fetch_failed(symbol, e)` with error code `"fetch_failed"`.
+  - If the resulting DataFrame is empty, returns `not_found(symbol, ...)` with error code `"symbol_not_found"` and a suffix suggestion.
   - Normalizes column names (handles multi-index cases).
   - Extracts `close`, `high`, `low`, `volume` series and latest price.
 - **Trend indicators**
@@ -42,7 +44,7 @@
     - RSI overbought/oversold hints.
     - MACD bullish/bearish crossovers.
     - Golden/Death cross based on SMA50 vs SMA200 (current vs previous bar).
-    - Bollinger band breakout (price above upper or below lower band) and “squeeze” (narrow band width).
+    - Bollinger band breakout (price above upper or below lower band) and "squeeze" (narrow band width).
   - Computes price position vs key moving averages:
     - Whether price is above/below each MA and distance in percent.
   - Assesses trend strength from ADX (weak, moderate, strong) and direction (bullish, bearish, neutral) based on MA structure and price.
@@ -61,6 +63,7 @@
   - `pandas` – NaN detection and numeric conversion.
   - `ta` – indicator computations (trend, momentum, volatility, volume).
 - **Internal relationships**
+  - `src.errors` – shared error response helpers.
   - Conceptually complements `price.py`:
     - `price.py` exposes raw OHLCV; `indicators.py` adds interpretation and aggregation.
   - Registered as `get_technical_indicators` MCP tool in `main.py`.
@@ -69,6 +72,15 @@
 ### 5. Usage & Summary
 - **Usage example (conceptual)**:
   - `get_technical_indicators("AAPL", period="6mo", interval="1d")` to get the latest technical state for Apple, including trend classification and notable signals.
+- **Error response shape**:
+  ```json
+  {
+    "error": "symbol_not_found",
+    "symbol": "AAPL",
+    "message": "No data returned for 'AAPL'. No price history for period='6mo', interval='1d'.",
+    "suggestion": "For Indian stocks try 'AAPL.NS' (NSE) or 'AAPL.BO' (BSE). For US stocks use plain ticker e.g. 'AAPL'."
+  }
+  ```
 - **Summary**:
-  - `indicators.py` is the technical analysis engine of the project, turning historical prices into an opinionated, structured set of indicators and signals that are easy for an AI or UI to consume.
+  - `indicators.py` is the technical analysis engine of the project, turning historical prices into an opinionated, structured set of indicators and signals that are easy for an AI or UI to consume, with structured errors to surface invalid symbols clearly.
 
